@@ -12,9 +12,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'jose'
 api = Api(app)
 
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
 
 jwt = JWT(app, authenticate, identity)
 
@@ -24,6 +21,9 @@ api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(StoreList, '/stores')
 api.add_resource(UserRegister, '/register')
+
+with app.app_context():
+    db.create_all()
 
 # without the next if statement the app will run every time we import this file
 # if we run this file, python assigns to this file a name such as __main__ so the app runs only when we run this file and not when we import it
